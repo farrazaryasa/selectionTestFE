@@ -3,7 +3,7 @@ import { useRef, useState } from "react";
 import toast, { Toaster } from 'react-hot-toast';
 import { AiOutlineEye } from 'react-icons/ai';
 import { BsFillEyeFill } from 'react-icons/bs';
-import { userRegister } from "../../api/users";
+import { userRegister } from "../../api/auth";
 
 
 

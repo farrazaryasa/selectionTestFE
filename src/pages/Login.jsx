@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import RegisterForm from "../components/register/RegisterForm";
 import { Button, Label, TextInput } from "flowbite-react";
-import toast, { Toaster } from 'react-hot-toast';
-import { userLogin } from "../api/users";
+import { userLogin } from "../api/auth";
 import { useNavigate } from "react-router-dom";
-
+import toast, { Toaster } from 'react-hot-toast'
 
 
 export default function Login() {
@@ -23,13 +22,19 @@ export default function Login() {
             const password = _password.current.value
 
             if (!username || !password) {
-                // toast.error('Please fill all the fields')
                 alert('please fill all the fields')
             } else {
                 const login = await userLogin({ username, password })
 
                 if (login.data.success === true) {
-                    // toast.success('Login Success')
+                    const payload = {
+                        id: login.data.data.id,
+                        email: login.data.data.email,
+                        username: login.data.data.username,
+                        is_active: login.data.data.is_active,
+                        token: login.data.data.token
+                    }
+                    localStorage.setItem('loginDetails', JSON.stringify(payload))
                     alert('Login Success')
                     setTimeout(() => {
                         navigate('/')
@@ -40,17 +45,16 @@ export default function Login() {
             }
 
         } catch (error) {
-            alert(error.response.data.message)
+            alert('user not found, please try again')
         }
     }
 
     return (
         <>
             <div className="flex">
-                <Toaster />
-                <div className="flex-1 h-screen bg-[url(https://i.pinimg.com/736x/50/96/f9/5096f99c9d85b81d48aa3fc920b0e603.jpg)]"></div>
+                <div className="flex-1 h-screen bg-[url(https://i.pinimg.com/736x/50/96/f9/5096f99c9d85b81d48aa3fc920b0e603.jpg)] sm:hidden"></div>
                 <div className="flex-1 flex flex-col items-center justify-center">
-                    <div className="w-1/2 flex flex-col gap-5">
+                    <div className="w-1/2 flex flex-col gap-5 sm:justify-center sm:h-screen">
                         <div className="text-2xl font-bold">Login to your account</div>
                         <div>
                             <Label>Username or Email</Label>

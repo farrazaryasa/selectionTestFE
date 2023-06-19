@@ -1,6 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 import SuccessVerify from "../components/verification/SuccessVerify";
-import { verifyUser } from "../api/users";
+import { verifyUser } from "../api/auth";
 import { useEffect, useState } from "react";
 import FailedVerify from "../components/verification/FailedVerify";
 
