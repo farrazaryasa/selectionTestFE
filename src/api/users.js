@@ -1,30 +1,75 @@
 import axios from "axios";
 
-export function userRegister(data) {
-    return axios.post(
-        process.env.REACT_APP_API + `/users/register`,
+export function getUserDetails() {
+    const userLogin = localStorage.getItem("loginDetails") ? JSON.parse(localStorage?.getItem("loginDetails")) : {}
+    return axios.get(
+        process.env.REACT_APP_API + `/users`,
         {
-            name: data.name,
-            email: data.email,
-            username: data.username,
-            password: data.password,
-            confirmationPassword: data.passwordConfirmation
+            headers: {
+                Authorization: `Bearer ${userLogin?.token}`
+            }
         }
     )
 }
 
-export function userLogin(data) {
-    return axios.post(
-        process.env.REACT_APP_API + `/users/login`,
+export function getUserPosts() {
+    const userLogin = localStorage.getItem("loginDetails") ? JSON.parse(localStorage?.getItem("loginDetails")) : {}
+    return axios.get(
+        process.env.REACT_APP_API + '/users/posts',
         {
-            username: data.username,
-            password: data.password
+            headers: {
+                Authorization: `Bearer ${userLogin?.token}`
+            }
         }
     )
 }
 
-export function verifyUser(token) {
+export function editProfile(data) {
+    const userLogin = localStorage.getItem("loginDetails") ? JSON.parse(localStorage?.getItem("loginDetails")) : {}
     return axios.patch(
-        process.env.REACT_APP_API + `/users/verify/${token}`
+        process.env.REACT_APP_API + `/users`,
+        {
+            bio: data.bio,
+            full_name: data.full_name,
+            username: data.username,
+            image: data.image
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${userLogin?.token}`,
+                "Content-Type": "multipart/form-data"
+            }
+        }
+    )
+}
+
+export function commentPost(data) {
+    const userLogin = localStorage.getItem("loginDetails") ? JSON.parse(localStorage?.getItem("loginDetails")) : {}
+    return axios.post(
+        process.env.REACT_APP_API + `/users/comments`,
+        {
+            post_id: data.id,
+            comment: data.comment
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${userLogin?.token}`
+            }
+        }
+    )
+}
+
+export function likeOrUnlike(data) {
+    const userLogin = localStorage.getItem("loginDetails") ? JSON.parse(localStorage?.getItem("loginDetails")) : {}
+    return axios.post(
+        process.env.REACT_APP_API + `/users/likes`,
+        {
+            post_id: data.id
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${userLogin?.token}`
+            }
+        }
     )
 }
