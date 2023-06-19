@@ -61,7 +61,9 @@ export default function ProfileBio(props) {
                     duration: 2000
                 })
                 localStorage.removeItem('loginDetails')
-                navigate('/login')
+                setTimeout(() => {
+                    navigate('/login')
+                }, 1000)
             }
         } catch (error) {
             toast.error(error.message)
